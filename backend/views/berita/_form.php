@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use common\models\Kategori;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Berita */
@@ -16,16 +18,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'isi_berita')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'id_kategori')->textInput() ?>
-
-    <?= $form->field($model, 'jml_baca')->textInput() ?>
-
-    <?= $form->field($model, 'id_user')->textInput() ?>
-
-    <?= $form->field($model, 'date_created')->textInput() ?>
+    <?= $form->field($model, 'id_kategori')
+        ->dropDownList(ArrayHelper::map(Kategori::find()->all(), 'id_kategori', 'kategori'))?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update',
+            ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']
+        )?>
     </div>
 
     <?php ActiveForm::end(); ?>
