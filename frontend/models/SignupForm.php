@@ -10,6 +10,8 @@ use common\models\User;
  */
 class SignupForm extends Model
 {
+    public $nama_depan;
+    public $nama_belakang;
     public $username;
     public $email;
     public $password;
@@ -21,6 +23,8 @@ class SignupForm extends Model
     public function rules()
     {
         return [
+            [['nama_depan','nama_belakang'], 'required'],
+
             ['username', 'trim'],
             ['username', 'required'],
             ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
@@ -49,12 +53,17 @@ class SignupForm extends Model
         }
         
         $user = new User();
+        $user->nama_depan = $this->nama_depan;
+        $user->nama_belakang = $this->nama_belakang;
         $user->username = $this->username;
         $user->email = $this->email;
+        $user->status = 10; // 10 untuk akun aktif , 9 untuk inactive, 0 untuk akun dihapus
+        $user->role = 1;
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
-        return $user->save() && $this->sendEmail($user);
+        // return $user->save() && $this->sendEmail($user);
+        return $user->save();
 
     }
 
