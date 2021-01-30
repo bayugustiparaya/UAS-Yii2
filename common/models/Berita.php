@@ -100,5 +100,11 @@ class Berita extends \yii\db\ActiveRecord
         return true;
     }
 
-    
+    public static function topBerita()
+    {
+        return self::find()
+            ->orderBy('jml_baca DESC')
+            ->limit(10)
+            ->all();
+    }
 }
