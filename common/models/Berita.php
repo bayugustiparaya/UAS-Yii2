@@ -35,13 +35,11 @@ class Berita extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['judul', 'isi_berita', 'id_kategori', 'jml_baca', 'id_user'], 'required'],
+            [['judul', 'isi_berita', 'id_kategori'], 'required'],
             [['isi_berita'], 'string'],
             [['id_kategori', 'jml_baca', 'id_user'], 'integer'],
             [['date_created'], 'safe'],
             [['judul'], 'string', 'max' => 255],
-            [['id_user'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['id_user' => 'id_user']],
-            [['id_kategori'], 'exist', 'skipOnError' => true, 'targetClass' => Kategori::className(), 'targetAttribute' => ['id_kategori' => 'id_kategori']],
         ];
     }
 
@@ -89,5 +87,24 @@ class Berita extends \yii\db\ActiveRecord
     public function getKomentars()
     {
         return $this->hasMany(Komentar::className(), ['id_berita' => 'id_berita']);
+    }
+
+    public function beforeSave($insert)
+    {
+        parent::beforeSave($insert);
+        if ($this->isNewRecord) {
+            $this->jml_baca = 0;
+        }
+        $this->date_created = date('Y-m-d H:i:s');
+        $this->id_user = Yii::$app->user->id;
+        return true;
+    }
+
+    public static function topBerita()
+    {
+        return self::find()
+            ->orderBy('jml_baca DESC')
+            ->limit(10)
+            ->all();
     }
 }
