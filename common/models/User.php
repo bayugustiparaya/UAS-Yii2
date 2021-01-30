@@ -10,17 +10,22 @@ use yii\web\IdentityInterface;
 /**
  * User model
  *
- * @property integer $id
+ * @property integer $id_user
+ * @property string $nama_depan
+ * @property string $nama_belakang
  * @property string $username
+ * @property string $auth_key
  * @property string $password_hash
- * @property string $password_reset_token
+ * @property string|null $password_reset_token
  * @property string $verification_token
  * @property string $email
- * @property string $auth_key
+ * @property integer $role
  * @property integer $status
- * @property integer $created_at
- * @property integer $updated_at
+ * @property integer $date_created
+ * @property integer $date_updated
  * @property string $password write-only password
+ *
+ * @property Berita[] $beritas
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -34,7 +39,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function tableName()
     {
-        return '{{%user}}';
+        return '{{%bayugustiparaya_1811082018}}';
     }
 
     /**
@@ -43,7 +48,14 @@ class User extends ActiveRecord implements IdentityInterface
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => 'date_created',
+                    ActiveRecord::EVENT_BEFORE_UPDATE => 'date_updated',
+                ],
+                'value' => function() { return date('U');  }, // unix timestamp
+            ],
         ];
     }
 
@@ -63,7 +75,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['id_user' => $id, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -208,5 +220,15 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    /**
+     * Gets query for [[Beritas]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBeritas()
+    {
+        return $this->hasMany(Berita::className(), ['id_user' => 'id_user']);
     }
 }
