@@ -2,6 +2,7 @@
 
 /* @var $this yii\web\View */
 
+use common\models\Berita;
 use yii\helpers\Html;
 use yii\widgets\ListView;
 
@@ -26,7 +27,21 @@ $this->title = 'My Yii Application';
                 ?>
             </div>
             <div class="col-lg-4">
-                
+                <div class="panel panel-default">
+                    <div class="panel-heading">Top Berita</div>
+                    <div class="panel-body">
+                        <ul>
+                            <?php foreach (Berita::topBerita() as $row) : ?>
+                                <li>
+                                    <?= Html::a($row->judul . ' (' . $row->jml_baca . ')', [
+                                        'view',
+                                        'id' => $row->id_berita
+                                    ]) ?>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
