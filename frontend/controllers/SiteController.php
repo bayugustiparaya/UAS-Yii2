@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Komentar;
 use common\models\Berita;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
@@ -270,6 +271,32 @@ class SiteController extends Controller
 
         return $this->render('resendVerificationEmail', [
             'model' => $model
+        ]);
+    }
+
+    public function actionView($id)
+    {
+        $model = Berita::findOne($id);
+        // menambahkan jumlah baca 1
+        $model->updateCounters(['jml_baca' => 1]);
+        // form komentar
+        $komentarForm = new Komentar();
+        if ($komentarForm->load(Yii::$app->request->post()) && $komentarForm->save()) {
+            return $this->redirect(['view', 'id' => $id]);
+        }
+        // data provider komentar
+        $dataProviderKomentar = new ActiveDataProvider([
+            'query' => Komentar::find()->where(['id_berita' => $id]),
+            'sort' => [
+                'defaultOrder' => [
+                    'id_komentar' => SORT_DESC,
+                ]
+            ]
+        ]);
+        return $this->render('view', [
+            'model' => $model,
+            'komentarForm' => $komentarForm,
+            'dataProviderKomentar' => $dataProviderKomentar
         ]);
     }
 }
