@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Berita;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -14,6 +15,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use yii\data\ActiveDataProvider;
 
 /**
  * Site controller
@@ -74,7 +76,20 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $dataProvider = new ActiveDataProvider([
+            'query' => Berita::find()->where('id_kategori != :kategori', [
+                ':kategori' => isset($_GET['kategori']) ? $_GET['kategori'] : 'NULL'
+            ]),
+            'sort' => [
+                'defaultOrder' => [
+                    'id_berita' => SORT_DESC
+                ]
+            ]
+        ]);
+    
+        return $this->render('index', [
+            'dataProvider' => $dataProvider
+        ]);
     }
 
     /**
