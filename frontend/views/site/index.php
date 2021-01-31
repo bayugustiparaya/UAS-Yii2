@@ -6,7 +6,7 @@ use common\models\Berita;
 use yii\helpers\Html;
 use yii\widgets\ListView;
 
-$this->title = 'My Yii Application';
+$this->title = Yii::$app->name;
 ?>
 <div class="site-index">
 

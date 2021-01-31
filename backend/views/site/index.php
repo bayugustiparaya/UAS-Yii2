@@ -2,7 +2,7 @@
 
 /* @var $this yii\web\View */
 
-$this->title = 'My Yii Application';
+$this->title = Yii::$app->name;
 ?>
 <div class="site-index">
 
@@ -22,21 +22,21 @@ $this->title = 'My Yii Application';
 
                 <p>Manajemen Data Berita. Posting informasi sesui fakta</p>
 
-                <p><a class="btn btn-default" href="berita">Goo !! &raquo;</a></p>
+                <p><a class="btn btn-default" href="../berita/index">Goo !! &raquo;</a></p>
             </div>
             <div class="col-lg-4">
                 <h2>Kategori</h2>
 
                 <p>Kelompokkan berita dengan memasukkan kedalam Kategori.</p>
 
-                <p><a class="btn btn-default" href="kategori">Goo !! &raquo;</a></p>
+                <p><a class="btn btn-default" href="../kategori/index">Goo !! &raquo;</a></p>
             </div>
             <div class="col-lg-4">
                 <h2>Komentar</h2>
 
                 <p>Yuk teliti dalam omongan netizen. Sortir komentar yang pantas di tampilkan.</p>
 
-                <p><a class="btn btn-default" href="komentar">Goo !! &raquo;</a></p>
+                <p><a class="btn btn-default" href="../komentar/index">Goo !! &raquo;</a></p>
             </div>
         </div>
 
