@@ -36,11 +36,12 @@ AppAsset::register($this);
         ],
     ]);
     $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
+        ['label' => 'Home', 'url' => Yii::$app->urlManagerFrontend->createUrl('')],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     } else {
+        $menuItems[] = ['label' => 'Dashboard', 'url' => ['/site/index']];
         $menuItems[] = ['label' => 'Berita', 'url' => ['/berita/index']];
         $menuItems[] = ['label' => 'Kategori', 'url' => ['/kategori/index']];
         $menuItems[] = ['label' => 'Komentar', 'url' => ['/komentar/index']];
